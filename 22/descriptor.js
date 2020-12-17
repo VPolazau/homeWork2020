@@ -32,7 +32,7 @@ Object.defineProperty(name, "lastName", {
 Object.defineProperty(window, "globalVal", {
   set: function (value) {
     console.log(value);
-    debugger; // Способ перейти в нужную стопточку
+    // debugger; // Способ перейти в нужную стопточку
   },
 });
 
@@ -43,3 +43,44 @@ function foo() {
   globalVal = 10;
 }
 foo();
+//
+//
+//
+//
+//
+//
+//
+// Задача: Вам попал в руки код объекта User, который хранит имя и фамилию в свойстве this.fullName:
+function user(fullName) {
+  this.fullName = fullName;
+
+  // Имя и фамилия всегда разделяются пробелом.
+  // Сделайте, чтобы были доступны свойства firstName и lastName, причём не только на чтение, но и на запись.
+  //
+  //
+  Object.defineProperties(this, {
+    firstName: {
+      get: function () {
+        return fullName.split(" ")[0];
+      },
+      set: function (newFirstName) {
+        this.fullName = newFirstName + " " + this.lastName;
+      },
+    },
+    lastName: {
+      get: function () {
+        return fullName.split(" ")[1];
+      },
+      set: function (newLastName) {
+        this.fullName = this.firstName + " " + newLastName;
+      },
+    },
+  });
+}
+//
+//
+var vasya = new user("Василий Попкин");
+console.log(vasya.firstName); // Василий
+console.log(vasya.lastName); // Попкин
+vasya.lastName = "Сидоров";
+console.log(vasya.fullName); // Василий Сидоров
