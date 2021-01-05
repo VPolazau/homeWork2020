@@ -27,7 +27,7 @@ console.log(liS);
 //
 //
 // 4. На все ссылки в примере установить класс “custom-link”
-let [...links] = document.querySelectorAll("a");
+let [...links] = document.querySelectorAll("a"); // можно просто работать с NodeListом не обязательно переводить его в массив
 console.log(links);
 links.forEach((el) => {
   el.classList.add("custom-link");
