@@ -21,9 +21,9 @@ html.addEventListener("click", callback, true);
 ul.addEventListener("click", callback, true);
 li.addEventListener("click", callback, true);
 
-function callback(event) {
-  let ms = (event.timeout = event.timeout + pause || 0);
-  let target = event.currentTarget;
+function callback(e) {
+  let ms = (e.timeout = e.timeout + pause || 0);
+  let target = e.currentTarget;
 
   setTimeout(function () {
     target.classList.add("highlight");
