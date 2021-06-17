@@ -1,35 +1,4 @@
-const tasks = [
-  {
-    _id: "5d2ca9e2e03d40b326596aa7",
-    completed: true,
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n",
-    title: "Eu ea incididunt sunt consectetur fugiat non.",
-  },
-  {
-    _id: "5d2ca9e29c8a94095c1288e0",
-    completed: false,
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n",
-    title:
-      "Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
-  },
-  {
-    _id: "5d2ca9e2e03d40b3232496aa7",
-    completed: true,
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n",
-    title: "Eu ea incididunt sunt consectetur fugiat non.",
-  },
-  {
-    _id: "5d2ca9e29c8a94095564788e0",
-    completed: false,
-    body:
-      "Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.\r\n",
-    title:
-      "Deserunt laborum id consectetur pariatur veniam occaecat occaecat tempor voluptate pariatur nulla reprehenderit ipsum.",
-  },
-];
+const tasks = [];
 
 (function (arrOfTasks) {
   const objOfTasks = arrOfTasks.reduce((acc, task) => {
@@ -51,6 +20,7 @@ const tasks = [
   //Events
   renderAllTasks(objOfTasks);
   form.addEventListener("submit", onFormSubmitHandler);
+  listContainer.addEventListener("click", onDeleteHandler);
 
   function renderAllTasks(tasksList) {
     if (!tasksList) {
@@ -78,6 +48,9 @@ const tasks = [
       "flex-wrap", // обертка или выравнивание содержимого
       "mt-2" // marginTop-2
     );
+
+    li.setAttribute("data-task-id", _id);
+
     const span = document.createElement("span");
     span.textContent = title;
     span.style.fontWeight = "bold";
@@ -99,8 +72,53 @@ const tasks = [
 
   function onFormSubmitHandler(e) {
     e.preventDefault();
-    const titleVal = inputTitle.value;
-    const bodyVal = inputBody.value;
-    console.log(titleVal, bodyVal);
+    const titleValue = inputTitle.value;
+    const bodyValue = inputBody.value;
+
+    if (!titleValue || !bodyValue) {
+      alert("Введите Title и Body");
+      return;
+    }
+
+    const task = createNewTask(titleValue, bodyValue);
+    const listItem = listItemTemplate(task);
+    listContainer.insertAdjacentElement("afterbegin", listItem);
+    form.reset();
+  }
+
+  function createNewTask(title, body) {
+    const newTask = {
+      title,
+      body,
+      completed: false,
+      _id: `task-${Math.random()}`,
+    };
+
+    objOfTasks[newTask._id] = newTask;
+    return { ...newTask };
+  }
+
+  function deleteTask(id) {
+    const { title } = objOfTasks[id];
+    const isConfirm = confirm(
+      `Вы действительно хотите удалить задачу: ${title} ?`
+    );
+    if (!isConfirm) return isConfirm;
+    delete objOfTasks[id];
+    return isConfirm;
+  }
+
+  function deleteTaskFromHtml(confirmed, el) {
+    if (!confirmed) return;
+    el.remove();
+  }
+
+  function onDeleteHandler({ target }) {
+    if (target.classList.contains("delete-btn")) {
+      const parent = target.closest("[data-task-id]");
+      const id = parent.dataset.taskId;
+      const confirmed = deleteTask(id);
+      deleteTaskFromHtml(confirmed, parent);
+    }
   }
 })(tasks);
