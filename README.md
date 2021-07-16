@@ -34,3 +34,4 @@
 29. Первый проект. Todo List. (Есть возможность выбора темы)
 30. Введение в асинхронность. (setTimeout)
 31. Введение в AJAX.(Создан GET запрос /posts с сайта https://jsonplaceholder.typicode.com/guide/)
+32. Добавлены "POST" запрос к "35" с реализацией .setRequestHeader
