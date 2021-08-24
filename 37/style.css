@@ -7,6 +7,14 @@ nav {
   z-index: 1;
 }
 
+button {
+  cursor: pointer;
+}
+
 .offcanvas {
   opacity: 1;
+}
+
+.accordion-item {
+  cursor: pointer;
 }
