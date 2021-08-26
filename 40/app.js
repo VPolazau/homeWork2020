@@ -59,6 +59,23 @@ function customHttp() {
 // Init http module
 const http = customHttp();
 
+const newsService = (function () {
+  const apiKey = "46a06bd43565432e99ed0a89d1b5a86b";
+  const apiUrl = "https://newsapi.org/v2";
+
+  return {
+    topHeadlinse(country = "ua", cb) {
+      http.get(
+        `${apiUrl}/top-headlines?country=${country}&apiKey=${apiKey}`,
+        cb
+      );
+    },
+    everything(query, cb) {
+      http.get(`${apiUrl}/everything?q=${query}&apiKey=${apiKey}`, cb);
+    },
+  };
+})();
+
 // Init selects
 document.addEventListener("DOMContentLoaded", () => {
   M.AutoInit();
