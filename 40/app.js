@@ -79,4 +79,30 @@ const newsService = (function () {
 // Init selects
 document.addEventListener("DOMContentLoaded", () => {
   M.AutoInit();
+  loadNews();
 });
+
+// Load news function
+function loadNews() {
+  newsService.topHeadlinse("ua", onGetResponse);
+}
+
+// Function on get response from server
+function onGetResponse(err, res) {
+  console.log(res);
+  renderNews(res.article);
+}
+
+// Function render news
+function renderNews(news) {
+  const newsContainer = document.querySelector(".news-container .row");
+
+  news.forEach((newsItem) => {
+    const el = newsTemplate(newsItem);
+  });
+}
+
+// News item template function
+function newsTemplate(news) {
+  console.log(news);
+}
