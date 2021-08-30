@@ -64,9 +64,9 @@ const newsService = (function () {
   const apiUrl = "https://newsapi.org/v2";
 
   return {
-    topHeadlinse(country = "ua", cb) {
+    topHeadlines(country = "ua", cb) {
       http.get(
-        `${apiUrl}/top-headlines?country=${country}&apiKey=${apiKey}`,
+        `${apiUrl}/top-headlines?country=${country}&category=technology&apiKey=${apiKey}`,
         cb
       );
     },
@@ -84,25 +84,42 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Load news function
 function loadNews() {
-  newsService.topHeadlinse("ua", onGetResponse);
+  newsService.topHeadlines("ua", onGetResponse);
 }
 
 // Function on get response from server
-function onGetResponse(err, res) {
-  console.log(res);
-  renderNews(res.article);
+function onGetResponse(res) {
+  renderNews(res.articles);
 }
 
 // Function render news
 function renderNews(news) {
   const newsContainer = document.querySelector(".news-container .row");
-
+  let fragment = "";
   news.forEach((newsItem) => {
     const el = newsTemplate(newsItem);
+    fragment += el;
   });
+
+  newsContainer.insertAdjacentHTML("afterbegin", fragment);
 }
 
 // News item template function
-function newsTemplate(news) {
-  console.log(news);
+function newsTemplate({ urlToImage, title, url, description }) {
+  return `
+    <div class="col m6">
+      <div class="card z-depth-5">
+        <div class="card-image">
+          <img src="${urlToImage}">
+          <span class="card-title grey darken-4">${title || ""}</span>
+        </div>
+        <div class="card-content">
+        <p>${description || ""}</p>
+        </div>
+        <div class="card-action">
+        <a href="${url}">Read more</a>
+        </div>
+      </div>
+    </div>
+  `;
 }
