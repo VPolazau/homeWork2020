@@ -106,6 +106,16 @@ function loadNews() {
 
 // Function on get response from server
 function onGetResponse(err, res) {
+  if (err) {
+    console.log(err);
+    showAlert(err, "error-msg");
+    return;
+  }
+  if (!res.articles.length) {
+    //show empty message
+    showAlert("Information is absent", "rounded");
+    return;
+  }
   renderNews(res.articles);
 }
 
@@ -139,4 +149,9 @@ function newsTemplate({ urlToImage, title, url, description }) {
       </div>
     </div>
   `;
+}
+
+//Error msg
+function showAlert(msg, type = "success") {
+  M.toast({ html: msg, classes: type });
 }
