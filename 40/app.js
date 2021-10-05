@@ -122,6 +122,9 @@ function onGetResponse(err, res) {
 // Function render news
 function renderNews(news) {
   const newsContainer = document.querySelector(".news-container .row");
+  if (newsContainer.children.length) {
+    clearContainer(newsContainer);
+  }
   let fragment = "";
   news.forEach((newsItem) => {
     const el = newsTemplate(newsItem);
@@ -129,6 +132,16 @@ function renderNews(news) {
   });
 
   newsContainer.insertAdjacentHTML("afterbegin", fragment);
+}
+
+//function clear container()
+function clearContainer(container) {
+  // container.innerHTML = "";
+  let child = container.lastElementChild;
+  while (child) {
+    container.removeChild(child);
+    child = container.lastElementChild;
+  }
 }
 
 // News item template function
