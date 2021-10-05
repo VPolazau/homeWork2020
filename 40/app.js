@@ -11,8 +11,8 @@ function customHttp() {
             cb(`Error! Status code: ${xhr.status}`, xhr);
             return;
           }
-          const response = JSON.parse(xhr.response);
-          cb(response);
+          const response = JSON.parse(xhr.responseText);
+          cb(null, response);
         });
 
         xhr.addEventListener("error", () => {
@@ -35,7 +35,7 @@ function customHttp() {
             return;
           }
           const response = JSON.parse(xhr.response);
-          cb(response);
+          cb(null, response);
         });
 
         xhr.addEventListener("error", () => {
@@ -64,7 +64,7 @@ const newsService = (function () {
   const apiUrl = "https://newsapi.org/v2";
 
   return {
-    topHeadlines(country = "ua", cb) {
+    topHeadlines(country = "ru", cb) {
       http.get(
         `${apiUrl}/top-headlines?country=${country}&category=technology&apiKey=${apiKey}`,
         cb
@@ -76,6 +76,16 @@ const newsService = (function () {
   };
 })();
 
+//Elements
+const form = document.forms["newsControls"];
+const countrySelect = form.elements["country"];
+const searchInput = form.elements["search"];
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+  loadNews();
+});
+
 // Init selects
 document.addEventListener("DOMContentLoaded", () => {
   M.AutoInit();
@@ -84,11 +94,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Load news function
 function loadNews() {
-  newsService.topHeadlines("ua", onGetResponse);
+  const country = countrySelect.value;
+  const searchText = searchInput.value;
+
+  if (!searchText) {
+    newsService.topHeadlines(country, onGetResponse);
+  } else {
+    newsService.everything(searchText, onGetResponse);
+  }
 }
 
 // Function on get response from server
-function onGetResponse(res) {
+function onGetResponse(err, res) {
   renderNews(res.articles);
 }
 
