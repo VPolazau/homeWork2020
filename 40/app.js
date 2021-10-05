@@ -94,6 +94,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Load news function
 function loadNews() {
+  showLoader();
+
   const country = countrySelect.value;
   const searchText = searchInput.value;
 
@@ -106,6 +108,7 @@ function loadNews() {
 
 // Function on get response from server
 function onGetResponse(err, res) {
+  removePreloader();
   if (err) {
     console.log(err);
     showAlert(err, "error-msg");
@@ -167,4 +170,24 @@ function newsTemplate({ urlToImage, title, url, description }) {
 //Error msg
 function showAlert(msg, type = "success") {
   M.toast({ html: msg, classes: type });
+}
+
+// Show loader function
+function showLoader() {
+  document.body.insertAdjacentHTML(
+    "afterbegin",
+    `
+    <div class="progress">
+        <div class="indeterminate"></div>
+    </div>
+    `
+  );
+}
+
+// Remove loader function
+function removePreloader() {
+  const loader = document.querySelector(".progress");
+  if (loader) {
+    loader.remove();
+  }
 }
