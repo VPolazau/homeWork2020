@@ -55,3 +55,35 @@ function customHttp() {
     },
   };
 }
+
+const myhttp = http();
+
+// Слишком большая вложенность, код не хочет обрабатываться
+// myhttp.get(
+//   'https://jsonplaceholder.tipecode.com/posts',
+//   (err, res) => {
+//     if (err) {
+//       console.log('Error',err)
+//       return;
+//     }
+//     myhttp.get(
+//       'https://jsonplaceholder.tipecode.com/comments?postId=1',
+//       (err, res) => {
+//         if (err) {
+//           console.log('Error',err)
+//           return;
+//         }
+//         myhttp.get(
+//           'https://jsonplaceholder.tipecode.com/users/1'
+//           (err, res) => {
+//             if (err) {
+//               console.log('Error',err)
+//               return;
+//             }
+//             console.log("наконец")
+//           },
+//         );
+//       },
+//     );
+//   },
+// );
