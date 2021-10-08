@@ -4,9 +4,9 @@ function customHttp() {
     get(url, cb) {
       try {
         const xhr = new XMLHttpRequest();
-        xhr.open("GET", url);
+        xhr.open(`GET`, url);
 
-        xhr.addEventListener("load", () => {
+        xhr.addEventListener(`load`, () => {
           if (Math.floor(xhr.status / 100) !== 2) {
             cb(`Error! Status code: ${xhr.status}`, xhr);
             return;
@@ -15,8 +15,8 @@ function customHttp() {
           cb(null, response);
         });
 
-        xhr.addEventListener("error", () => {
-          console.log("Error");
+        xhr.addEventListener(`error`, () => {
+          console.log(`Error`);
         });
 
         xhr.send();
@@ -27,9 +27,9 @@ function customHttp() {
     post(url, body, headers, cb) {
       try {
         const xhr = new XMLHttpRequest();
-        xhr.open("POST", url);
+        xhr.open(`POST`, url);
 
-        xhr.addEventListener("load", () => {
+        xhr.addEventListener(`load`, () => {
           if (Math.floor(xhr.status / 100) !== 2) {
             cb(`Error! Status code: ${xhr.status}`, xhr);
             return;
@@ -38,8 +38,8 @@ function customHttp() {
           cb(null, response);
         });
 
-        xhr.addEventListener("error", () => {
-          console.log("Error");
+        xhr.addEventListener(`error`, () => {
+          console.log(`Error`);
         });
 
         if (headers) {
@@ -59,24 +59,24 @@ function customHttp() {
 const myhttp = customHttp();
 
 // Слишком большая вложенность
-// myhttp.get("https://jsonplaceholder.typicode.com/posts", (err, res) => {
+// myhttp.get(`https://jsonplaceholder.typicode.com/posts`, (err, res) => {
 //   if (err) {
-//     console.log("Error", err);
+//     console.log(`Error`, err);
 //     return;
 //   }
 //   myhttp.get(
-//     "https://jsonplaceholder.typicode.com/comments?postId=1",
+//     `https://jsonplaceholder.typicode.com/comments?postId=1`,
 //     (err, res) => {
 //       if (err) {
-//         console.log("Error", err);
+//         console.log(`Error`, err);
 //         return;
 //       }
-//       myhttp.get("https://jsonplaceholder.typicode.com/users/1", (err, res) => {
+//       myhttp.get(`https://jsonplaceholder.typicode.com/users/1`, (err, res) => {
 //         if (err) {
-//           console.log("Error", err);
+//           console.log(`Error`, err);
 //           return;
 //         }
-//         console.log("наконец");
+//         console.log(`наконец`);
 //       });
 //     }
 //   );
@@ -84,7 +84,7 @@ const myhttp = customHttp();
 
 function getPost(id) {
   return new Promise(function (resolve, reject) {
-    myhttp.get("https://jsonplaceholder.typicode.com/posts/1", (err, res) => {
+    myhttp.get(`https://jsonplaceholder.typicode.com/posts/1`, (err, res) => {
       if (err) {
         reject(err);
       }
@@ -92,32 +92,39 @@ function getPost(id) {
     });
   });
 }
-function getPostComments() {
+function getPostComments(post) {
+  const { id } = post;
   return new Promise(function (resolve, reject) {
     myhttp.get(
-      "https://jsonplaceholder.typicode.com/comments?postId=1",
+      `https://jsonplaceholder.typicode.com/comments?postId=${id}`,
       (err, res) => {
         if (err) {
           reject(err);
         }
-        resolve(res);
+        resolve({ post, comments: res });
       }
     );
   });
 }
-function getUserCreatedPost() {
+function getUserCreatedPost(data) {
+  const {
+    post: { userId },
+  } = data;
   return new Promise(function (resolve, reject) {
-    myhttp.get("https://jsonplaceholder.typicode.com/users/1", (err, res) => {
-      if (err) {
-        reject(err);
+    myhttp.get(
+      `https://jsonplaceholder.typicode.com/users/${userId}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve({ ...data, user: res });
       }
-      resolve(res);
-    });
+    );
   });
 }
 
 getPost()
-  .then((post) => getPostComments())
-  .then((comments) => getUserCreatedPost())
-  .then((user) => console.log(user))
+  .then((post) => getPostComments(post))
+  .then((data) => getUserCreatedPost(data))
+  .then((fullData) => console.log(fullData))
   .catch((err) => console.log(err));
