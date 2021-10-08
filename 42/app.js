@@ -56,34 +56,68 @@ function customHttp() {
   };
 }
 
-const myhttp = http();
+const myhttp = customHttp();
 
-// Слишком большая вложенность, код не хочет обрабатываться
-// myhttp.get(
-//   'https://jsonplaceholder.tipecode.com/posts',
-//   (err, res) => {
-//     if (err) {
-//       console.log('Error',err)
-//       return;
-//     }
-//     myhttp.get(
-//       'https://jsonplaceholder.tipecode.com/comments?postId=1',
-//       (err, res) => {
+// Слишком большая вложенность
+// myhttp.get("https://jsonplaceholder.typicode.com/posts", (err, res) => {
+//   if (err) {
+//     console.log("Error", err);
+//     return;
+//   }
+//   myhttp.get(
+//     "https://jsonplaceholder.typicode.com/comments?postId=1",
+//     (err, res) => {
+//       if (err) {
+//         console.log("Error", err);
+//         return;
+//       }
+//       myhttp.get("https://jsonplaceholder.typicode.com/users/1", (err, res) => {
 //         if (err) {
-//           console.log('Error',err)
+//           console.log("Error", err);
 //           return;
 //         }
-//         myhttp.get(
-//           'https://jsonplaceholder.tipecode.com/users/1'
-//           (err, res) => {
-//             if (err) {
-//               console.log('Error',err)
-//               return;
-//             }
-//             console.log("наконец")
-//           },
-//         );
-//       },
-//     );
-//   },
-// );
+//         console.log("наконец");
+//       });
+//     }
+//   );
+// });
+
+function getPost(id) {
+  return new Promise(function (resolve, reject) {
+    myhttp.get("https://jsonplaceholder.typicode.com/posts/1", (err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
+}
+function getPostComments() {
+  return new Promise(function (resolve, reject) {
+    myhttp.get(
+      "https://jsonplaceholder.typicode.com/comments?postId=1",
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+}
+function getUserCreatedPost() {
+  return new Promise(function (resolve, reject) {
+    myhttp.get("https://jsonplaceholder.typicode.com/users/1", (err, res) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(res);
+    });
+  });
+}
+
+getPost()
+  .then((post) => getPostComments())
+  .then((comments) => getUserCreatedPost())
+  .then((user) => console.log(user))
+  .catch((err) => console.log(err));
