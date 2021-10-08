@@ -84,12 +84,15 @@ const myhttp = customHttp();
 
 function getPost(id) {
   return new Promise(function (resolve, reject) {
-    myhttp.get(`https://jsonplaceholder.typicode.com/posts/1`, (err, res) => {
-      if (err) {
-        reject(err);
+    myhttp.get(
+      `https://jsonplaceholder.typicode.com/posts/${id}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
       }
-      resolve(res);
-    });
+    );
   });
 }
 function getPostComments(post) {
@@ -123,11 +126,59 @@ function getUserCreatedPost(data) {
   });
 }
 
-getPost()
-  .then((post) => getPostComments(post))
-  .then((data) => getUserCreatedPost(data))
-  .then((fullData) => console.log(fullData))
-  .catch((err) => console.log(err))
-  .finally(() => {
-    console.log("finally");
-  }); // выполниться в любом случае, вне зависимости от ошибки
+// getPost()
+//   .then((post) => getPostComments(post))
+//   .then((data) => getUserCreatedPost(data))
+//   .then((fullData) => console.log(fullData))
+//   .catch((err) => console.log(err))
+//   .finally(() => {
+//     console.log("finally");
+//   }); // выполниться в любом случае, вне зависимости от ошибки
+
+function getPost2(id) {
+  return new Promise(function (resolve, reject) {
+    myhttp.get(
+      `https://jsonplaceholder.typicode.com/posts/${id}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+}
+function getPostComments2(id) {
+  return new Promise(function (resolve, reject) {
+    myhttp.get(
+      `https://jsonplaceholder.typicode.com/comments?postId=${id}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+}
+function getUserCreatedPost2(userId) {
+  return new Promise(function (resolve, reject) {
+    myhttp.get(
+      `https://jsonplaceholder.typicode.com/users/${userId}`,
+      (err, res) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(res);
+      }
+    );
+  });
+}
+
+Promise.all([getPost2(1), getPostComments2(1), getUserCreatedPost2(1)])
+  .then(([post, comments, user]) => {
+    console.log(post, comments, user);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
