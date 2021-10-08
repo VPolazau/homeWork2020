@@ -127,4 +127,7 @@ getPost()
   .then((post) => getPostComments(post))
   .then((data) => getUserCreatedPost(data))
   .then((fullData) => console.log(fullData))
-  .catch((err) => console.log(err));
+  .catch((err) => console.log(err))
+  .finally(() => {
+    console.log("finally");
+  }); // выполниться в любом случае, вне зависимости от ошибки
