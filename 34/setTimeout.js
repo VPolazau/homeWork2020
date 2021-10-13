@@ -6,8 +6,8 @@ setTimeout(() => {
   console.log(4);
   setTimeout(() => {
     console.log(5);
-  }, 200);
-}, 300);
+  }, 1000);
+}, 3000);
 
 console.log(6);
 console.log(7);
