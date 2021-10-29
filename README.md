@@ -56,4 +56,7 @@
 51. Наследование es6. `extends` и `super`.
 52. `npm init`. `package.json`(его особенности и использование). `webpack.config.js`(настройка, `path`,`__dirname`) Запуск и сборка проекта.
 53. Модули `export/import`(`as` и `default`) на практике.
-54. Проект Avia Tickets.
+54. --
+55. "Инкапсуляция". Как можно реализовать её в js без TypeScript.
+56. "Инкапсуляция" в модулях.
+57. Проект Avia Tickets.
