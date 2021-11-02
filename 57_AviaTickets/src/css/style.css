@@ -1,3 +1,46 @@
-body {
-  font-size: 20px;
+.d-flex {
+  display: flex;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.justify-items-center {
+  justify-items: center;
+}
+
+.ml-auto {
+  margin-left: auto;
+}
+
+.mr-auto {
+  margin-right: auto;
+}
+
+/* header style */
+.header .brand-logo {
+  position: static;
+}
+
+.header .currency-select input.select-dropdown {
+  margin: 0;
+  color: #fff;
+  border-bottom: none;
+}
+/* убераем полосу на фокусе */
+.header .currency-select input.select-dropdown:focus {
+  border-bottom: none;
+}
+/* уменьшили ширину */
+.header .currency-select {
+  width: 120px;
+}
+/* меняем цвет стрелочки (через fill, потому что стрелочка svg) */
+.header .currency-select .caret {
+  fill: #fff;
+}
+
+.header .brand-logo {
+  font-size: 1.5rem;
 }
