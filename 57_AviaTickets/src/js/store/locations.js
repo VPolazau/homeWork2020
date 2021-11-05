@@ -59,7 +59,7 @@ class Locations {
     return this.countries[code].name;
   }
 
-  async fetchTickets(params){
+  async fetchTickets(params) {
     const response = await this.api.prices(params);
     console.log(response);
   }
