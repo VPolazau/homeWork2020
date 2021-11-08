@@ -1,13 +1,15 @@
 import api from '../services/apiService';
+import { formatDate } from '../helpers/date';
 
 class Locations {
-  constructor(api) {
+  constructor(api, helpers) {
     this.api = api;
     this.countries = null;
     this.cities = null;
-    this.shortCitiesList = null;
-    this.airlines = null;
+    this.shortCitiesList = {};
+    this.airlines = {};
     this.lastSearch = {};
+    this.formatDate = helpers.formatDate;
   }
   async init() {
     const response = await Promise.all([
@@ -71,8 +73,8 @@ class Locations {
   serializeCities(cities) {
     return cities.reduce((acc, city) => {
       const country_name = this.countries[city.country_code].name;
-      const full_name = `${city.name}, ${country_name}`;
-      const city_name = city.name || city.name_translations.en;
+      city.name = city.name || city.name_translations.en;
+      const full_name = `${city.name},${country_name}`;
       acc[city.code] = {
         ...city,
         country_name,
@@ -85,22 +87,25 @@ class Locations {
   async fetchTickets(params) {
     const response = await this.api.prices(params);
     this.lastSearch = this.serializeTickets(response.data);
+    // console.log(this.lastSearch);
   }
 
   serializeTickets(tickets) {
-    return Object.values(tickets).map(tiket => {
+    return Object.values(tickets).map(tiсket => {
       return {
-        ...tiket,
-        origin_name: this.getCityNameByCode(ticket.origin),
-        destination_name: this.getCityNameByCode(ticket.destination),
-        airline_logo: this.getAirlineLogoByCode(tiket.airline),
-        airline_name: this.getAirlineNameByCode(tiket.airline),
+        ...tiсket,
+        origin_name: this.getCityNameByCode(tiсket.origin),
+        destination_name: this.getCityNameByCode(tiсket.destination),
+        airline_logo: this.getAirlineLogoByCode(tiсket.airline),
+        airline_name: this.getAirlineNameByCode(tiсket.airline),
+        departure_at: this.formatDate(tiсket.departure_at, 'dd MMM yyyy hh:mm'),
+        return_at: this.formatDate(tiсket.return_at, 'dd MMM yyyy hh:mm'),
       };
     });
   }
 }
 
-const locations = new Locations(api);
+const locations = new Locations(api, { formatDate });
 
 export default locations;
 
