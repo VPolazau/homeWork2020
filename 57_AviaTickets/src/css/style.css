@@ -49,3 +49,83 @@
 .header .brand-logo {
   font-size: 1.5rem;
 }
+
+.ticket-airline-img {
+  height: 5em;
+  width: 5em;
+  margin-top: 1em;
+  margin-left: 1em;
+  margin-bottom: 0.5em;
+  margin-right: 2em;
+}
+
+.ticket-airline-name {
+  font-weight: bold;
+}
+
+.ticket-city {
+  text-transform: uppercase;
+  font-size: 20px;
+}
+
+i.medium.material-icons {
+  font-size: 1.5rem;
+}
+
+.ticket-destination {
+  border-bottom-color: #bbbbbb;
+  border-bottom-style: dotted;
+}
+
+.ticket-card {
+  padding: 1em;
+}
+
+.ticket-price {
+  font-size: 1.5em;
+  background-color: #6a1b9a;
+  color: #fff;
+}
+
+.ticket-time-price {
+  margin-top: 0.5em;
+}
+
+.ticket-time-departure {
+  font-size: 13px;
+  font-weight: bold;
+  color: #9b9b9b;
+}
+
+.ticket-flight-number {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.ticket-transfers {
+  font-size: 12px;
+  font-weight: bold;
+}
+
+.dropdown-content li > span {
+  color: #6a1b9a !important;
+}
+
+input#autocomplete-origin:focus {
+  border-bottom: 1px solid #6a1b9a;
+  box-shadow: 0 1px 0 0 #6a1b9a;
+}
+
+input#autocomplete-destination:focus {
+  border-bottom: 1px solid #6a1b9a;
+  box-shadow: 0 1px 0 0 #6a1b9a;
+}
+
+.datepicker-date-display {
+  background-color: #6a1b9a !important;
+}
+
+.datepicker-cancel,
+.datepicker-done {
+  color: #6a1b9a !important;
+}
