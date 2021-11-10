@@ -19,7 +19,7 @@ module.exports = {
     noInfo: false,
     stats: "minimal",
     hot: true,
-    open: "Google Chrome Dev",
+    // open: "Google Chrome Dev",
   },
   module: {
     rules: [
